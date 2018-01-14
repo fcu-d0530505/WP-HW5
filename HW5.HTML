@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Google Maps</title>
+    <style>
+      #map { 
+        height: 600px; 
+        width: 100%; 
+       } 
+    </style>
+  </head>
+  <body>
+	<h3>My Google Maps</h3>
+    <div id="map"></div>
+	
+    <script>
+		
+		var locations = [
+	 
+        ['台中永安邮局ATM<br/ >407台中市西屯區西屯路三段166-80號',24.190472, 120.612222],
+        ['台中何厝邮局<br/ >407台中市西屯區青海路一段83號',24.164667, 120.654222],
+        ['東海大學郵局<br/ >407台中市西屯區台灣大道四段1727號',24.179028, 120.601639],
+        ['台中工业区邮局ATM<br/ >407台中市西屯區工業區六路10號',24.169472, 120.606444],
+        ['台中大隆路邮局<br/ >40759台中市西屯區大隆路60、62號',24.156500, 120.652806],
+        ['台中逢甲邮局ATM<br/ >407台中市西屯區河南路二段268號',24.175278, 120.649139],
+        ['台中西屯邮局ATM<br/ >407台中市西屯區黎明路三段130號',24.176694, 120.637583],
+        ['台中福安邮局ATM<br/ >407台中市西屯區福順路318號',24.183472, 120.618583],
+		['台中荣总邮局ATM<br/ >407台中市西屯區台灣大道四段1650號',24.183972, 120.604861],
+
+		['台灣中油 文華站<br/ >407台中市西屯區文心路三段187號',24.171583, 120.659833],
+		['台灣中油 青海站<br/ >407台中市西屯區青海路二段211號',24.171333, 120.643889],
+		['台灣中油 恩光中清交流道站<br/ >407台中市西屯區環中路一段2490號',24.200694, 120.657000],
+		['台灣中油 中清站(加盟)<br/ >407台中市西屯區中清路三段150號',24.202111, 120.654417],
+		['台灣中油<br/ >407台中市西屯區福雅路693號',24.205722, 120.628889],
+		['台灣中油 安和加油站 <br/ >407台中市西屯區安和路51-8號',24.166167, 120.618944],
+		['台灣中油 大度山站(加盟) <br/ >407台中市西屯區台灣大道五段142號',24.185221,120.591003],
+		['台灣中油 文心路站 <br/ >407台中市西屯區文心路三段2號',24.162833, 120.650167],
+		['台灣中油 安祥站 <br/ >407台中市西屯區環中路三段800號',24.162556, 120.628222],
+		['台灣中油 台中工業區站<br/ >407台中市西屯區台灣大道四段1047號',24.183111, 120.614556],
+		['台灣中油(加盟店)<br/ >407台中市西屯區台灣大道四段1832號',24.182833, 120.600944],
+		['台灣中油 長安站(加盟)<br/ >407台中市西屯區福雅路300號',24.192639, 120.623194],
+		['台灣中油 光明路站(加盟)<br/ >407台中市西屯區廣福路191號',24.198333, 120.642611],
+		
+		['福懋加油站<br/ >407台中市西屯區西屯路三段90之28號',24.183694, 120.629806],
+		['统一精工速迈乐加油站<br/ >407台中市西屯區環中路二段698號',24.195139, 120.644333],
+		['台亞石油<br/ >407台中市西屯區河南路二段35號',24.173806, 120.659833],
+		['员村加油站<br/ >407台中市西屯區中清路三段1號',24.199861, 120.655361],
+		['全國加油站 <br/ >407台中市西屯區台灣大道三段258號',24.165444, 120.645111],
+		['全國加油站<br/ >407台中市西屯區西屯路三段77之3號',24.182361, 120.633611],
+		['西歐加油站<br/ >407台中市西屯區環中路一段2112號',24.201528, 120.663194]
+		
+      ];
+     function initMap() {
+		
+		var fcu = {lat: 24.179, lng: 120.649};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: fcu
+        });
+		
+		var marker_fcu = new google.maps.Marker({ 
+          position: fcu, 
+          map: map 
+        }); 
+		
+		var infowindow_fcu = new google.maps.InfoWindow({content: "FCU"});
+		
+		marker_fcu.addListener('mouseover', function() {
+		infowindow_fcu.open(map, marker_fcu);
+		});
+		marker_fcu.addListener('mouseout', function() {
+		infowindow_fcu.close();
+		});
+		
+		var labels = '✉✉✉✉✉✉✉✉✉⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽⛽';
+		
+		var infowindow = new google.maps.InfoWindow();
+		var marker, i;
+		
+		for (i = 0; i < locations.length; i++) {  
+			marker = new google.maps.Marker({
+			position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+			map: map,
+			label: labels[i % labels.length]
+		});
+		
+		google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+			return function() {
+			infowindow.setContent(locations[i][0]);
+			infowindow.open(map, marker);
+				}
+			})(marker, i));
+	  
+		google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
+			return function() {
+			infowindow.close();
+				}
+			})(marker, i));
+	  
+		}
+	}
+    </script>
+	
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVzeYipfPzJuiHOUEu1CNUy9cYuaLBHaY&callback=initMap">
+    </script>
+  </body>
+</html>
